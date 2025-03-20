@@ -1,0 +1,6 @@
+CREATE DATABASE task_manager_api_production;
+CREATE DATABASE task_manager_api_production_cache;
+CREATE DATABASE task_manager_api_production_queue;
+CREATE DATABASE task_manager_api_production_cable;
+
+
