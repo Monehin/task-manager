@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'backend/**'
-      - '.github/workflows/backend-deploy.yml'
+      - '.github/workflows/deploy-backend.yml'
 
 permissions:
   contents: read
@@ -20,6 +20,7 @@ jobs:
       IMAGE_NAME: monehin/backend
       COMMIT_SHA: ${{ github.sha }}
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
       KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
       MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
