@@ -1,13 +1,36 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 
-const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URL,
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+    });
+  }
+  if (networkError) {
+    console.error(`[Network error]: ${networkError}`);
+  }
 });
 
+const httpLink = new HttpLink({
+  uri: process.env.REACT_APP_GRAPHQL_URL 
+});
 
 const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
+  link: from([errorLink, httpLink]),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          projects: {
+            merge(existing = [], incoming) {
+              return [...existing, ...incoming];
+            },
+          },
+        },
+      },
+    },
+  }),
 });
 
 export default client;
