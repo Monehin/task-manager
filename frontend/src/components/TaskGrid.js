@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const TaskGrid = ({ tasks }) => {
+const TaskGrid = React.memo(({ tasks }) => {
   return (
     <motion.div
       className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-6 max-w-5xl mx-auto md:grid-cols-4"
@@ -20,6 +20,6 @@ const TaskGrid = ({ tasks }) => {
       ))}
     </motion.div>
   );
-};
+});
 
 export default TaskGrid;

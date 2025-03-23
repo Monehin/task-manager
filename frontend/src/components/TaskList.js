@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const TaskList = ({ tasks }) => (
+const TaskList = React.memo(({ tasks }) => (
   <motion.div
     className="space-y-4 max-w-3xl mx-auto"
     initial={{ opacity: 0 }}
@@ -18,6 +18,6 @@ const TaskList = ({ tasks }) => (
       </motion.div>
     ))}
   </motion.div>
-);
+));
 
 export default TaskList;
