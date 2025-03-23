@@ -1,20 +1,14 @@
 #!/bin/bash -e
 
-echo "Entrypoint received command: ${@}"
-
 # Enable jemalloc for reduced memory usage and latency.
 if [ -z "${LD_PRELOAD+x}" ]; then
-  LD_PRELOAD=$(find /usr/lib -name libjemalloc.so.2 -print -quit)
-  export LD_PRELOAD
+    LD_PRELOAD=$(find /usr/lib -name libjemalloc.so.2 -print -quit)
+    export LD_PRELOAD
 fi
 
-
-export DISABLE_DATABASE_ENVIRONMENT_CHECK=1
-
-echo "Running rails db:reset..."
-./bin/rails db:reset
-
-echo "Running rails db:seed..."
-./bin/rails db:seed
+# If running the rails server then create or migrate existing database
+if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  ./bin/rails db:prepare
+fi
 
 exec "${@}"
