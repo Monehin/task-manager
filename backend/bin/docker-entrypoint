@@ -11,6 +11,9 @@ fi
 echo "Running rails db:prepare..."
 ./bin/rails db:prepare
 
+echo "Running rails db:reset..."
+./bin/rails db:reset
+
 echo "Running rails db:seed..."
 ./bin/rails db:seed
 
