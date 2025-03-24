@@ -84,7 +84,6 @@ function App() {
     setEditedProjectName(proj ? proj.name : '');
   };
 
-  // Called when Save is clicked in SelectProject.
   const handleUpdateProject = async (id, newName) => {
     try {
       await updateProject({
@@ -135,38 +134,43 @@ function App() {
   const selectedProject = data.projects.find((project) => project.id === selectedProjectId);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6 sm:p-10">
-      <h1 className="text-4xl sm:text-5xl font-bold mb-8 text-gray-800 text-center">
-        Task Dashboard
-      </h1>
-      <SelectProject
-        projects={data.projects}
-        selectedProjectId={selectedProjectId}
-        onChange={handleProjectChange}
-        onUpdateProjectName={handleUpdateProject}
-        onDeleteProject={handleDeleteProject}
-        onCancelEdit={handleCancelEdit}
-        editMode={editMode}
-        setEditMode={setEditMode}
-        editedProjectName={editedProjectName}
-        setEditedProjectName={setEditedProjectName}
-      />
-      <ViewToggle view={view} setView={setView} />
-      {updating && <p className="text-center text-blue-600 mt-4">Saving project...</p>}
-      {deleting && <p className="text-center text-blue-600 mt-4">Deleting project...</p>}
-      <Dashboard
-        project={selectedProject}
-        view={view}
-        editable={editMode}
-        onDeleteTask={handleDeleteTask}
-        deletedTaskIds={deletedTaskIds}
-      />
-      {(updateError || deleteError) && (
-        <p className="text-center text-red-600 mt-4">
-          {updateError ? updateError.message : deleteError.message}
-        </p>
-      )}
-    </div>
+    <div className="min-h-screen flex flex-col">
+      <div className="sticky top-0 z-10 bg-gradient-to-br from-gray-50 via-white to-gray-100 p-3 sm:p-5 mb-2 md:mb-6">
+        <h1 className="text-4xl sm:text-5xl font-bold mb-8 text-gray-800 text-center">
+          Task Dashboard
+        </h1>
+        <SelectProject
+          projects={data.projects}
+          selectedProjectId={selectedProjectId}
+          onChange={handleProjectChange}
+          onUpdateProjectName={handleUpdateProject}
+          onDeleteProject={handleDeleteProject}
+          onCancelEdit={handleCancelEdit}
+          editMode={editMode}
+          setEditMode={setEditMode}
+          editedProjectName={editedProjectName}
+          setEditedProjectName={setEditedProjectName}
+        />
+        <ViewToggle view={view} setView={setView} />
+        {updating && <p className="text-center text-blue-600 mt-4">Saving project...</p>}
+        {deleting && <p className="text-center text-blue-600 mt-4">Deleting project...</p>}
+        {(updateError || deleteError) && (
+          <p className="text-center text-red-600 mt-4">
+            {updateError ? updateError.message : deleteError.message}
+          </p>
+        )}
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-6 pt-6">
+        <Dashboard
+          project={selectedProject}
+          view={view}
+          editable={editMode}
+          onDeleteTask={handleDeleteTask}
+          deletedTaskIds={deletedTaskIds}
+        />
+      </div>
+  </div>
   );
 }
 

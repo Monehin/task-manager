@@ -67,8 +67,7 @@ const SelectProject = ({
       </label>
 
       {editMode ? (
-        <div className="flex flex-col items-center gap-2">
-          {/* In EDIT mode, the label references 'projectEditInput' */}
+        <div className="flex flex-col items-center gap-2 ">
           <input
             id="projectEditInput"
             type="text"
@@ -76,7 +75,7 @@ const SelectProject = ({
             onChange={(e) => setEditedProjectName(e.target.value)}
             className="w-full p-3 rounded-2xl border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:outline-none shadow-sm text-base"
           />
-          <div className="flex flex-row gap-4 justify-center">
+          <div className="flex flex-row gap-4 justify-center mt-2">
             <button
               onClick={handleSave}
               className="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-full shadow-md hover:bg-green-700 transition-colors"

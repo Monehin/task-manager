@@ -2,7 +2,7 @@ import React from 'react';
 import { List, Grid } from 'lucide-react';
 
 const ViewToggle = ({ view, setView }) => (
-  <div className="flex justify-center gap-4 mb-8">
+  <div className="flex justify-center gap-4 mb-2">
     <button
       onClick={() => setView('list')}
       className={`flex items-center gap-2 px-6 py-2 rounded-full transition-all border ${
