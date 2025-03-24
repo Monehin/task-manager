@@ -3,11 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import TaskList from './TaskList';
 import TaskGrid from './TaskGrid';
 
-const Dashboard = ({ project, view }) => {
-
-  const tasks = React.useMemo(() => {
-    return project ? project.tasks : [];
-  }, [project]);
+const Dashboard = ({ project, view, editable, onDeleteTask, deletedTaskIds }) => {
+  const tasks = React.useMemo(() => (project ? project.tasks : []), [project]);
 
   if (!project) {
     return (
@@ -18,11 +15,11 @@ const Dashboard = ({ project, view }) => {
   }
 
   return (
-      <AnimatePresence>
-        {view === 'list' ? (
-          <TaskList key="list" tasks={tasks} />
+    <AnimatePresence>
+      {view === 'list' ? (
+        <TaskList key="list" tasks={tasks} editable={editable} onDeleteTask={onDeleteTask} deletedTaskIds={deletedTaskIds} />
       ) : (
-        <TaskGrid key="grid" tasks={tasks} />
+        <TaskGrid key="grid" tasks={tasks} editable={editable} onDeleteTask={onDeleteTask} deletedTaskIds={deletedTaskIds} />
       )}
     </AnimatePresence>
   );
