@@ -34,9 +34,29 @@ export const UPDATE_PROJECT = gql`
   }
 `;
 
+export const DELETE_PROJECT = gql`
+  mutation DeleteProject($input: DeleteProjectInput!) {
+    deleteProject(input: $input) {
+      project {
+        id
+      }
+    }
+  }
+`;
+
 function App() {
   const { loading, error, data, refetch } = useQuery(GET_PROJECTS);
   const [updateProject, { loading: updating, error: updateError }] = useMutation(UPDATE_PROJECT);
+  const [deleteProject, { loading: deleting, error: deleteError }] = useMutation(DELETE_PROJECT, {
+    onCompleted: () => {
+      setSelectedProjectId('');
+      setEditMode(false);
+      refetch();
+    },
+    onError: (err) => {
+      console.error("Error deleting project", err);
+    },
+  });
 
   const [view, setView] = useState('list');
   const [selectedProjectId, setSelectedProjectId] = useState('');
@@ -58,12 +78,13 @@ function App() {
 
   const handleProjectChange = (e) => {
     setSelectedProjectId(e.target.value);
-    setEditMode(false); 
-    setDeletedTaskIds([]); 
+    setEditMode(false);
+    setDeletedTaskIds([]);
     const proj = data.projects.find((p) => p.id === e.target.value);
     setEditedProjectName(proj ? proj.name : '');
   };
 
+  // Called when Save is clicked in SelectProject.
   const handleUpdateProject = async (id, newName) => {
     try {
       await updateProject({
@@ -80,6 +101,20 @@ function App() {
       refetch();
     } catch (err) {
       console.error("Error updating project", err);
+    }
+  };
+
+  const handleDeleteProject = async (id) => {
+    if (window.confirm("Are you sure you want to delete this project?")) {
+      try {
+        await deleteProject({
+          variables: {
+            input: { id },
+          },
+        });
+      } catch (err) {
+        console.error("Error deleting project", err);
+      }
     }
   };
 
@@ -109,6 +144,7 @@ function App() {
         selectedProjectId={selectedProjectId}
         onChange={handleProjectChange}
         onUpdateProjectName={handleUpdateProject}
+        onDeleteProject={handleDeleteProject}
         onCancelEdit={handleCancelEdit}
         editMode={editMode}
         setEditMode={setEditMode}
@@ -116,6 +152,8 @@ function App() {
         setEditedProjectName={setEditedProjectName}
       />
       <ViewToggle view={view} setView={setView} />
+      {updating && <p className="text-center text-blue-600 mt-4">Saving project...</p>}
+      {deleting && <p className="text-center text-blue-600 mt-4">Deleting project...</p>}
       <Dashboard
         project={selectedProject}
         view={view}
@@ -123,7 +161,11 @@ function App() {
         onDeleteTask={handleDeleteTask}
         deletedTaskIds={deletedTaskIds}
       />
-      {updateError && <p className="text-center text-red-600 mt-4">{updateError.message}</p>}
+      {(updateError || deleteError) && (
+        <p className="text-center text-red-600 mt-4">
+          {updateError ? updateError.message : deleteError.message}
+        </p>
+      )}
     </div>
   );
 }

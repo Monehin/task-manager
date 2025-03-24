@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { Edit2, Check, X } from 'lucide-react';
+import { Edit2, Check, X, Trash2 } from 'lucide-react';
 
 const SelectProject = ({
   projects,
   selectedProjectId,
   onChange,
   onUpdateProjectName,
+  onDeleteProject,
   onCancelEdit,
   editMode,
   setEditMode,
@@ -29,7 +30,7 @@ const SelectProject = ({
 
   const handleCancel = () => {
     setEditedProjectName(currentProject ? currentProject.name : '');
-    onCancelEdit(); 
+    onCancelEdit(); // clear deletion state and exit edit mode
   };
 
   return (
@@ -62,6 +63,13 @@ const SelectProject = ({
             title="Cancel"
           >
             <X size={20} />
+          </button>
+          <button
+            onClick={() => onDeleteProject(currentProject.id)}
+            className="flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-full shadow-md hover:bg-red-700 transition-colors"
+            title="Delete Project"
+          >
+            <Trash2 size={20} />
           </button>
         </div>
       ) : (
