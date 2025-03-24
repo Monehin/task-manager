@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { XIcon } from 'lucide-react';
 
-const TaskGrid = React.memo(({ tasks, editable, onDeleteTask, deletedTaskIds = [] }) => {
+const TaskGrid = memo(({ tasks, editable, onDeleteTask, deletedTaskIds = [] }) => {
   return (
     <motion.div
-      data-testid="task-grid-container" 
+      data-testid="task-grid"
       className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -16,6 +16,7 @@ const TaskGrid = React.memo(({ tasks, editable, onDeleteTask, deletedTaskIds = [
         return (
           <motion.div
             key={task.id}
+            data-testid={`task-${task.id}`}
             whileHover={{ scale: isDeleted ? 1 : 1.05 }}
             className={`relative bg-white p-5 rounded-xl shadow-md flex items-center justify-center text-center ${
               isDeleted ? 'opacity-50 pointer-events-none' : ''

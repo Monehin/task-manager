@@ -28,7 +28,7 @@ describe('TaskGrid Component', () => {
     expect(screen.getByText(/Task One/i)).toBeInTheDocument();
     expect(screen.getByText(/Task Two/i)).toBeInTheDocument();
 
-    const gridContainer = screen.getByTestId('task-grid-container');
+    const gridContainer = screen.getByTestId('task-grid');
     expect(gridContainer).toHaveClass('grid');
   });
 
