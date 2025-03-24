@@ -1,7 +1,6 @@
-# frozen_string_literal: true
-
 module Types
-  class MutationType < Types::BaseObject
+  class MutationType < BaseObject
     field :update_project, mutation: Mutations::UpdateProject
+    field :delete_project, mutation: Mutations::DeleteProject
   end
 end
